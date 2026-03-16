@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avirat Talent Intelligence System v2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg:          #F0F2F5;
+    --surface:     #FFFFFF;
+    --border:      #E2E6EC;
+    --border-md:   #C8D0DC;
+    --text:        #151D2B;
+    --text-2:      #3D4F65;
+    --text-3:      #8496A9;
+
+    --green:       #0C6E52;
+    --green-bg:    #EBF7F3;
+    --green-mid:   #B8E8D8;
+    --green-line:  #2ABD8A;
+
+    --blue:        #1648B0;
+    --blue-bg:     #EDF2FC;
+    --blue-mid:    #B8CCF2;
+    --blue-line:   #3D72F0;
+
+    --amber:       #9A4D08;
+    --amber-bg:    #FEF3E7;
+    --amber-mid:   #F5C98A;
+    --amber-line:  #EE8822;
+
+    --violet:      #5426A0;
+    --violet-bg:   #F1EDFA;
+    --violet-mid:  #CDBDEC;
+    --violet-line: #7C4DCC;
+
+    --teal:        #0A6B7C;
+    --teal-bg:     #E8F7F9;
+    --teal-mid:    #A8DDE6;
+    --teal-line:   #1AABBD;
+
+    --slate:       #2E4A6A;
+    --slate-bg:    #EDF1F6;
+    --slate-mid:   #B4C4D8;
+    --slate-line:  #5B7FA6;
+
+    --pass:    #0C6E52;
+    --review:  #B55A00;
+    --decline: #B01C2C;
+
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+    --shadow-md: 0 3px 12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    padding: 28px 22px 36px;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────────── */
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .header-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.4px; margin-bottom: 5px; }
+  .header h1 span { color: var(--blue); }
+  .header p { font-size: 11.5px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+
+  /* ── SECTION BAR ─────────────────────────────────────────── */
+  .section-bar {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  }
+  .section-bar-line { flex: 1; height: 1px; background: var(--border); }
+  .section-bar-label {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 5px 14px; border-radius: 20px; white-space: nowrap;
+  }
+  .tag-green  { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-mid); }
+  .tag-blue   { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-mid); }
+  .tag-amber  { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-mid); }
+  .tag-violet { background: var(--violet-bg); color: var(--violet); border: 1px solid var(--violet-mid); }
+  .tag-teal   { background: var(--teal-bg);   color: var(--teal);   border: 1px solid var(--teal-mid); }
+  .tag-slate  { background: var(--slate-bg);  color: var(--slate);  border: 1px solid var(--slate-mid); }
+
+  /* ── LANES GRID ──────────────────────────────────────────── */
+  .lanes-row { display: grid; gap: 10px; align-items: start; margin-bottom: 12px; }
+
+  /* ── LANE CARD ───────────────────────────────────────────── */
+  .lane {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 11px;
+    display: flex; flex-direction: column; gap: 9px;
+    box-shadow: var(--shadow-sm);
+  }
+  .lane-green  { border-top: 3px solid var(--green-line); }
+  .lane-blue   { border-top: 3px solid var(--blue-line); }
+  .lane-amber  { border-top: 3px solid var(--amber-line); }
+  .lane-violet { border-top: 3px solid var(--violet-line); }
+  .lane-teal   { border-top: 3px solid var(--teal-line); }
+  .lane-slate  { border-top: 3px solid var(--slate-line); }
+
+  .hl-green  { background: var(--green-bg);  border-color: var(--green-mid); }
+  .hl-blue   { background: var(--blue-bg);   border-color: var(--blue-mid); }
+  .hl-amber  { background: var(--amber-bg);  border-color: var(--amber-mid); }
+  .hl-violet { background: var(--violet-bg); border-color: var(--violet-mid); }
+  .hl-teal   { background: var(--teal-bg);   border-color: var(--teal-mid); }
+  .hl-slate  { background: var(--slate-bg);  border-color: var(--slate-mid); }
+
+  /* ── LANE HEADER ─────────────────────────────────────────── */
+  .lane-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 4px; }
+  .lane-title {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace; line-height: 1.4; color: var(--text);
+  }
+  .lane-badge {
+    font-size: 9px; font-weight: 600; font-family: 'JetBrains Mono', monospace;
+    padding: 2px 7px; border-radius: 4px;
+    background: var(--bg); color: var(--text-3); border: 1px solid var(--border); flex-shrink: 0;
+  }
+
+  /* ── AGENT ───────────────────────────────────────────────── */
+  .agent { display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; }
+  .agent-icon {
+    width: 46px; height: 46px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0; border: 2px solid transparent;
+  }
+  .icon-green  { background: var(--green-bg);  border-color: var(--green-mid); }
+  .icon-blue   { background: var(--blue-bg);   border-color: var(--blue-mid); }
+  .icon-amber  { background: var(--amber-bg);  border-color: var(--amber-mid); }
+  .icon-violet { background: var(--violet-bg); border-color: var(--violet-mid); }
+  .icon-teal   { background: var(--teal-bg);   border-color: var(--teal-mid); }
+  .icon-slate  { background: var(--slate-bg);  border-color: var(--slate-mid); }
+
+  .agent-name    { font-size: 11px; font-weight: 600; line-height: 1.3; color: var(--text); }
+  .agent-name-sm { font-size: 10px; font-weight: 600; line-height: 1.3; color: var(--text); }
+
+  /* ── PILL / INFO ─────────────────────────────────────────── */
+  .pill {
+    background: var(--bg); border-radius: 8px; padding: 7px 9px;
+    font-size: 10px; font-family: 'JetBrains Mono', monospace;
+    border: 1px solid var(--border);
+  }
+  .pill-label { font-size: 8.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-3); margin-bottom: 3px; font-weight: 600; }
+  .pv         { color: var(--text);   font-weight: 600; line-height: 1.5; }
+  .pv-green   { color: var(--green);  font-weight: 600; line-height: 1.5; }
+  .pv-blue    { color: var(--blue);   font-weight: 600; line-height: 1.5; }
+  .pv-amber   { color: var(--amber);  font-weight: 600; line-height: 1.5; }
+  .pv-violet  { color: var(--violet); font-weight: 600; line-height: 1.5; }
+  .pv-teal    { color: var(--teal);   font-weight: 600; line-height: 1.5; }
+  .pv-slate   { color: var(--slate);  font-weight: 600; line-height: 1.5; }
+  .pd         { color: var(--text-2); line-height: 1.5; }
+
+  .info-card {
+    background: var(--bg); border-radius: 8px; padding: 8px 9px;
+    font-size: 10.5px; line-height: 1.6; color: var(--text-2); border: 1px solid var(--border);
+  }
+  .ic-title {
+    font-size: 8.5px; text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 4px; font-weight: 700; font-family: 'JetBrains Mono', monospace;
+  }
+  .ic-green  { color: var(--green); }
+  .ic-blue   { color: var(--blue); }
+  .ic-amber  { color: var(--amber); }
+  .ic-violet { color: var(--violet); }
+  .ic-teal   { color: var(--teal); }
+  .ic-slate  { color: var(--slate); }
+  .info-card ul { padding-left: 12px; }
+  .info-card ul li { margin-bottom: 2px; }
+
+  /* ── HUMAN GATE ──────────────────────────────────────────── */
+  .human-gate {
+    background: #FFFBF0; border: 1.5px dashed #D4A12A;
+    border-radius: 10px; padding: 8px 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .gate-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #FEF3C7; border: 1px solid #D4A12A;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .gate-text strong { display: block; font-size: 11px; font-weight: 700; color: var(--text); }
+  .gate-text span { color: var(--text-3); font-size: 9.5px; font-family: 'JetBrains Mono', monospace; }
+
+  /* ── DECISION ENGINE ─────────────────────────────────────── */
+  .decision-engine {
+    width: 68px; height: 68px; border-radius: 50%;
+    margin: 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    background: var(--blue-bg); border: 3px solid var(--blue-line);
+    box-shadow: 0 0 0 5px var(--blue-bg);
+  }
+  .consensus-block {
+    background: var(--bg); border: 1px solid var(--blue-mid);
+    border-left: 3px solid var(--blue-line); border-radius: 8px; padding: 7px 9px;
+  }
+  .c-step { display: flex; align-items: flex-start; gap: 5px; font-size: 9.5px; color: var(--text-2); padding: 2px 0; border-bottom: 1px solid var(--border); }
+  .c-step:last-child { border-bottom: none; }
+  .c-num { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 9.5px; color: var(--blue); flex-shrink: 0; width: 14px; }
+  .decision-outcomes { display: flex; flex-direction: column; gap: 5px; }
+  .outcome { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; }
+  .outcome-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── CONFLICT TABLE ──────────────────────────────────────── */
+  .conflict-row { display: flex; gap: 5px; align-items: center; font-size: 9.5px; color: var(--text-2); padding: 2px 0; border-bottom: 1px solid var(--border); }
+  .conflict-row:last-child { border-bottom: none; }
+  .cr-cond { flex: 1; font-family: 'JetBrains Mono', monospace; font-size: 9px; }
+  .cr-tag { font-size: 8.5px; font-weight: 700; padding: 1px 5px; border-radius: 3px; white-space: nowrap; flex-shrink: 0; }
+  .cr-flag   { background: #FEF3C7; color: #92400E; }
+  .cr-review { background: var(--amber-bg); color: var(--amber); }
+  .cr-block  { background: #FEE2E2; color: #991B1B; }
+
+  /* ── ARROW ───────────────────────────────────────────────── */
+  .lane-arrow { display: flex; align-items: center; justify-content: center; padding-top: 52px; color: var(--text-3); font-size: 18px; }
+
+  /* ── AGENTS GRID ─────────────────────────────────────────── */
+  .agents-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .agent-sm { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+  .icon-sm { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; border: 2px solid transparent; }
+
+  /* ── CANDIDATE ENTRY POINT ───────────────────────────────── */
+  .entry-section {
+    background: var(--surface);
+    border: 1.5px solid var(--slate-mid);
+    border-top: 3px solid var(--slate-line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+  .entry-title {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace; color: var(--slate); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .entry-body { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .job-board {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; min-width: 90px; text-align: center;
+    transition: border-color 0.2s;
+  }
+  .job-board:hover { border-color: var(--blue-mid); background: var(--blue-bg); }
+  .jb-icon { font-size: 22px; }
+  .jb-name { font-size: 10px; font-weight: 700; color: var(--text); }
+  .jb-sub  { font-size: 9px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+  .entry-arrow { color: var(--text-3); font-size: 22px; flex-shrink: 0; }
+  .redirect-badge {
+    background: var(--blue-bg); border: 1.5px dashed var(--blue-line);
+    border-radius: 10px; padding: 10px 14px; text-align: center; flex-shrink: 0;
+  }
+  .redirect-badge .rb-title { font-size: 10px; font-weight: 700; color: var(--blue); margin-bottom: 3px; }
+  .redirect-badge .rb-sub   { font-size: 9px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; line-height: 1.4; }
+  .redirect-link {
+    display: inline-block; margin-top: 4px;
+    font-size: 9px; font-weight: 700; color: var(--blue);
+    background: var(--blue-mid); border-radius: 4px; padding: 2px 7px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .entry-flow-note {
+    flex: 1; min-width: 200px;
+    background: var(--slate-bg); border: 1px solid var(--slate-mid);
+    border-radius: 8px; padding: 9px 12px;
+    font-size: 10px; color: var(--text-2); line-height: 1.6;
+  }
+
+  /* ── DATA SOURCES BAND ───────────────────────────────────── */
+  .data-sources-band {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--teal-line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    box-shadow: var(--shadow-sm);
+  }
+  .dsb-label { font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; color: var(--teal); white-space: nowrap; }
+  .dsb-items { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; flex: 1; }
+  .ds-chip {
+    display: flex; align-items: center; gap: 5px;
+    background: var(--teal-bg); border: 1px solid var(--teal-mid);
+    border-radius: 6px; padding: 4px 9px;
+    font-size: 10px; font-weight: 600; color: var(--teal);
+  }
+  .ds-chip-arrow { color: var(--text-3); font-size: 14px; }
+
+  /* ── CROSS-SELL BADGE ────────────────────────────────────── */
+  .cross-sell {
+    background: #F0F7FF; border: 1.5px dashed var(--blue-line);
+    border-radius: 8px; padding: 7px 9px;
+  }
+  .cs-title { font-size: 8.5px; font-weight: 700; color: var(--blue); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; display: flex; align-items: center; gap: 4px; }
+  .cs-body  { font-size: 9.5px; color: var(--text-2); line-height: 1.4; }
+
+  /* ── NEW AGENT HIGHLIGHT (budget) ────────────────────────── */
+  .lane-new-badge {
+    position: absolute; top: -1px; right: 10px;
+    font-size: 8px; font-weight: 700; background: #DCFCE7; color: #166534;
+    padding: 2px 8px; border-radius: 0 0 6px 6px;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
+    border: 1px solid #86EFAC; border-top: none;
+  }
+
+  /* ── ANALYTICS DASHBOARD SECTION ────────────────────────── */
+  .dashboard-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--violet-line);
+    border-radius: 14px;
+    padding: 16px 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-md);
+  }
+  .dash-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .dash-title-block .dash-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; color: var(--violet); margin-bottom: 3px; }
+  .dash-title-block h3 { font-size: 15px; font-weight: 700; color: var(--text); }
+  .dash-sub { font-size: 10.5px; color: var(--text-3); margin-top: 2px; }
+  .dash-audiences { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .da-badge { font-size: 9px; padding: 3px 9px; border-radius: 20px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+  .da-recruiter { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-mid); }
+  .da-leadership { background: var(--violet-bg); color: var(--violet); border: 1px solid var(--violet-mid); }
+  .da-hr { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-mid); }
+
+  .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+  .dash-panel {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 11px 12px;
+  }
+  .dp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .dp-title { font-size: 10px; font-weight: 700; color: var(--text); }
+  .dp-audience { font-size: 8.5px; padding: 2px 7px; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+  .kpi-row { display: flex; flex-direction: column; gap: 5px; }
+  .kpi-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+  .kpi-item:last-child { border-bottom: none; }
+  .kpi-label { flex: 1; font-size: 10px; color: var(--text-2); }
+  .kpi-value { font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .kv-green  { color: var(--green); }
+  .kv-blue   { color: var(--blue); }
+  .kv-amber  { color: var(--amber); }
+  .kv-violet { color: var(--violet); }
+  .kv-red    { color: var(--decline); }
+
+  /* mini bar chart */
+  .mini-bar-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .mb-label { font-size: 9.5px; color: var(--text-2); width: 80px; flex-shrink: 0; }
+  .mb-track { flex: 1; height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .mb-fill  { height: 100%; border-radius: 4px; }
+  .mb-val   { font-size: 9px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--text-2); width: 30px; text-align: right; flex-shrink: 0; }
+
+  /* ── LEARNING LOOP ───────────────────────────────────────── */
+  .learning-loop {
+    background: var(--surface); border: 1px solid var(--border);
+    border-top: 3px solid var(--amber-line); border-radius: 12px;
+    padding: 16px 20px; display: flex; align-items: center; gap: 16px;
+    margin-top: 4px; box-shadow: var(--shadow-sm);
+  }
+  .loop-icon { width: 46px; height: 46px; border-radius: 12px; background: var(--amber-bg); border: 2px solid var(--amber-mid); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .loop-body { flex: 1; }
+  .loop-body h3 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .loop-body p  { font-size: 11px; color: var(--text-2); line-height: 1.5; }
+  .loop-body strong { color: var(--amber); }
+  .loop-steps { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; flex-shrink: 0; }
+  .ls { padding: 4px 11px; border-radius: 20px; font-size: 9.5px; font-weight: 600; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+  .ls-dim   { background: var(--bg); color: var(--text-3); border: 1px solid var(--border); }
+  .ls-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-mid); }
+  .ls-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-mid); font-size: 10px; }
+  .ls-arr   { color: var(--text-3); font-size: 12px; }
+
+  /* ── FOOTER ──────────────────────────────────────────────── */
+  .footer { margin-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .footer-note { font-size: 10.5px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 6px; }
+  .footer-legend { display: flex; gap: 16px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--text-3); }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .ld-dashed { border: 1.5px dashed #D4A12A; background: #FEF3C7; }
+
+  /* version tag */
+  .v2-tag { display: inline-flex; align-items: center; background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; border-radius: 20px; font-size: 9px; font-weight: 700; padding: 2px 10px; font-family: 'JetBrains Mono', monospace; margin-left: 10px; vertical-align: middle; }
+
+  /* ── FLOW CONNECTORS ─────────────────────────────────────── */
+  .flow-wrapper { position: relative; }
+  .flow-svg {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; overflow: visible; z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ HEADER -->
+<div class="header">
+
+  <h1><span>Avirat</span> Talent Intelligence System <span class="v2-tag">v2.0</span></h1>
+  <p>Workforce Intelligence → Candidate Entry → Hiring Decision Orchestration → Post-Hire Outcome Tracking</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ PHASE 1 -->
+<div class="section-bar">
+  <div class="section-bar-line"></div>
+  <div class="section-bar-label tag-green">Phase 1 — Workforce Intelligence · Pre-Hiring</div>
+  <div class="section-bar-line"></div>
+</div>
+
+<div class="lanes-row" style="grid-template-columns: repeat(4,1fr) 36px 1.4fr; margin-bottom:12px;">
+
+  <!-- WI-1 -->
+  <div class="lane lane-green">
+    <div class="lane-header">
+      <div class="lane-title">Workforce<br>Demand</div>
+      <div class="lane-badge">WI-1</div>
+    </div>
+    <div class="agent">
+      <div class="agent-icon icon-green">📊</div>
+      <div class="agent-name">Workforce Demand Agent</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Inputs</div>
+      <div class="pd">Workload metrics · Project pipeline · Team utilisation · Business growth</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Output</div>
+      <div class="pv-green">Suggested Role · Urgency · Reason</div>
+    </div>
+  </div>
+
+  <!-- WI-2 -->
+  <div class="lane lane-green">
+    <div class="lane-header">
+      <div class="lane-title">Skill Gap<br>Detection</div>
+      <div class="lane-badge">WI-2</div>
+    </div>
+    <div class="agent">
+      <div class="agent-icon icon-green">🔍</div>
+      <div class="agent-name">Skill Gap Detection Agent</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Inputs</div>
+      <div class="pd">Team skill inventory · Project requirements · Performance gaps</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Output</div>
+      <div class="pv-green">Skill Gaps · Recommended Role Types</div>
+    </div>
+  </div>
+
+  <!-- WI-3 -->
+  <div class="lane lane-green">
+    <div class="lane-header">
+      <div class="lane-title">Workforce<br>Stability</div>
+      <div class="lane-badge">WI-3</div>
+    </div>
+    <div class="agent">
+      <div class="agent-icon icon-green">🛡</div>
+      <div class="agent-name">Workforce Stability Agent</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Inputs</div>
+      <div class="pd">Churn trends · Leave patterns · Absence signals</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Output</div>
+      <div class="pv-green">Risk Indicators · Workforce Alert</div>
+    </div>
+  </div>
+
+  <!-- WI-4 NEW: Budget Feasibility Agent -->
+  <div class="lane lane-amber" style="position:relative;">
+    <div class="lane-new-badge">NEW</div>
+    <div class="lane-header">
+      <div class="lane-title">Budget<br>Feasibility</div>
+      <div class="lane-badge">WI-4</div>
+    </div>
+    <div class="agent">
+      <div class="agent-icon icon-amber">💰</div>
+      <div class="agent-name">Budget Feasibility Agent</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Inputs</div>
+      <div class="pd">Project financial data · Approved budget envelopes · Account Manager inputs · Cost-per-hire benchmarks · Headcount plan</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Capabilities</div>
+      <div class="pd">Assesses budget leeway per role · Benchmarks comp ranges · Evaluates hiring cost vs project ROI · Flags over-budget scenarios</div>
+    </div>
+    <div class="pill" style="border-left:3px solid var(--amber-line);">
+      <div class="pill-label" style="color:var(--amber);">Output</div>
+      <div class="pv-amber">Budget Envelope per Role · Feasibility Score · Constraint Warning</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-title ic-amber">⚠ Warning System</div>
+      Flags when a requested role exceeds allocated project budget. Surfaces to recruiters, hiring managers, and account managers before requisition is raised.
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div class="lane-arrow">→</div>
+
+  <!-- Capacity Monitoring Output -->
+  <div class="lane lane-green hl-green">
+    <div class="lane-title" style="margin-bottom:8px;">Workforce Capacity Monitoring &amp; Predictive Job Position Suggestion</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="info-card">
+        <div class="ic-title ic-green">Personas</div>
+        <ul><li>HR Business Partner</li><li>Workforce Planning Manager</li><li>HR Leadership</li><li>Account Managers</li></ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-title ic-green">Triggers</div>
+        <ul>
+          <li>Workload threshold exceeded</li>
+          <li>Business growth indicator detected</li>
+          <li>Skill gap identified in team</li>
+          <li>High churn risk detected</li>
+          <li>Leave pattern affecting capacity</li>
+          <li style="color:var(--amber);font-weight:600;">Budget envelope threshold breached</li>
+        </ul>
+      </div>
+      <div class="info-card" style="grid-column:span 2;">
+        <div class="ic-title ic-green">✓ Output — Suggested Job Position</div>
+        Role Type · Seniority Level · Urgency Level · <span style="color:var(--amber);font-weight:600;">Budget Leeway · Feasibility Flag</span> · Reason for Recommendation — <strong style="color:var(--green)">Anticipate hiring needs before a formal job request is created</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ CANDIDATE ENTRY POINT -->
+<div class="section-bar">
+  <div class="section-bar-line"></div>
+  <div class="section-bar-label tag-slate">Candidate Application Entry Points</div>
+  <div class="section-bar-line"></div>
+</div>
+
+<div class="entry-section">
+  <div class="entry-title">
+    <span>🌐</span> Where Candidates Apply — Multi-Platform Ingestion
+  </div>
+  <div class="entry-body">
+    <div class="job-board">
+      <div class="jb-icon">💼</div>
+      <div class="jb-name">LinkedIn</div>
+      <div class="jb-sub">Easy Apply</div>
+    </div>
+    <div class="job-board">
+      <div class="jb-icon">🔎</div>
+      <div class="jb-name">Indeed</div>
+      <div class="jb-sub">Apply Now</div>
+    </div>
+    <div class="job-board">
+      <div class="jb-icon">🟠</div>
+      <div class="jb-name">Naukri</div>
+      <div class="jb-sub">Apply</div>
+    </div>
+    <div class="job-board">
+      <div class="jb-icon">🌍</div>
+      <div class="jb-name">Company<br>Career Page</div>
+      <div class="jb-sub">Direct</div>
+    </div>
+    <div class="job-board">
+      <div class="jb-icon">🗂</div>
+      <div class="jb-name">ATS<br>Portal</div>
+      <div class="jb-sub">Integrated</div>
+    </div>
+    <div class="entry-arrow">→</div>
+    <div class="redirect-badge">
+      <div class="rb-title">🔗 Smart Redirect</div>
+      <div class="rb-sub">Post-application, candidate is<br>redirected to Avirat Interaction Agent</div>
+      <div class="redirect-link">avirat.io/chat → Career Chatbot</div>
+    </div>
+    <div class="entry-arrow">→</div>
+    <div class="entry-flow-note">
+      <strong style="color:var(--slate);">Data Ingestion Flow:</strong> All applications across platforms are normalised and parsed into the ATS. Resume data, application metadata, and source-platform tags are extracted and passed downstream to the Screening & Evaluation layer for agent processing.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ DATA SOURCES BAND -->
+<div class="data-sources-band">
+  <div class="dsb-label">📥 Resume & Data Sources</div>
+  <div class="dsb-items">
+    <div class="ds-chip">🗄 ATS Database</div>
+    <span class="ds-chip-arrow">·</span>
+    <div class="ds-chip">📄 Resume Parser (NLP)</div>
+    <span class="ds-chip-arrow">·</span>
+    <div class="ds-chip">💼 LinkedIn Profile API</div>
+    <span class="ds-chip-arrow">·</span>
+    <div class="ds-chip">🔎 Indeed / Naukri Feed</div>
+    <span class="ds-chip-arrow">·</span>
+    <div class="ds-chip">📋 Skill Assessment Platform</div>
+    <span class="ds-chip-arrow">·</span>
+    <div class="ds-chip">🗂 Job Description Store</div>
+    <span class="ds-chip-arrow">→</span>
+    <div class="ds-chip" style="background:var(--green-bg);border-color:var(--green-mid);color:var(--green);">⬇ Feeds L1 Screening Agents</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ PHASE 2 -->
+<div class="section-bar">
+  <div class="section-bar-line"></div>
+  <div class="section-bar-label tag-blue">Phase 2 — Hiring Decision Orchestration</div>
+  <div class="section-bar-line"></div>
+</div>
+
+<style>
+  /* ── PHASE 2 PROCESS FLOW LAYOUT ─────────────────────────── */
+  .p2-flow { display: flex; flex-direction: column; gap: 0; }
+
+  /* row = one horizontal tier in the flow */
+  .p2-row { display: flex; align-items: stretch; gap: 10px; margin-bottom: 0; }
+
+  /* vertical connector between rows */
+  .p2-connector {
+    display: flex; align-items: center; justify-content: center;
+    height: 36px; position: relative;
+  }
+  .p2-connector::before {
+    content: ''; position: absolute; left: 50%; top: 0;
+    width: 2px; height: 100%; background: var(--border-md);
+    transform: translateX(-50%);
+  }
+  .p2-connector-arrow {
+    position: relative; z-index: 2;
+    background: var(--blue-bg); border: 1.5px solid var(--blue-mid);
+    border-radius: 20px; padding: 2px 10px;
+    font-size: 9px; font-weight: 700; color: var(--blue);
+    font-family: 'JetBrains Mono', monospace; white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+
+  /* full-width tier label strip */
+  .p2-tier-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 8px;
+  }
+  .p2-tier-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .p2-tier-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--blue); color: #fff;
+    font-size: 9px; font-weight: 700; flex-shrink: 0;
+  }
+
+  /* decision gate node */
+  .p2-gate-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin: 0;
+  }
+  .p2-gate-node {
+    display: flex; align-items: center; gap: 10px;
+    background: #FFFBF0; border: 2px solid #D4A12A;
+    border-radius: 8px; padding: 10px 18px;
+    max-width: 600px; width: 100%;
+  }
+  .p2-gate-diamond {
+    width: 32px; height: 32px; background: #D4A12A;
+    transform: rotate(45deg); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .p2-gate-diamond span { transform: rotate(-45deg); font-size: 13px; display: block; }
+  .p2-gate-body { display: flex; flex-direction: column; gap: 2px; }
+  .p2-gate-title { font-size: 12px; font-weight: 700; color: #92400E; }
+  .p2-gate-sub { font-size: 9.5px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+  .p2-gate-outcomes { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+  .p2-gate-tag {
+    font-size: 8.5px; font-weight: 700; padding: 2px 8px; border-radius: 3px;
+  }
+  .p2-gate-proceed { background: #DCFCE7; color: #166534; }
+  .p2-gate-drop    { background: #FEE2E2; color: #991B1B; }
+
+  /* branch row */
+  .p2-branch-row {
+    display: grid; grid-template-columns: 1fr 40px 1fr;
+    gap: 0; align-items: start; margin: 0;
+  }
+  .p2-branch-divider {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-start; padding-top: 20px; gap: 4px;
+  }
+  .p2-branch-or {
+    background: var(--border); border-radius: 20px;
+    padding: 3px 7px; font-size: 8.5px; font-weight: 700;
+    color: var(--text-3); font-family: 'JetBrains Mono', monospace;
+  }
+  .p2-branch-line { width: 1px; flex: 1; background: var(--border-md); min-height: 40px; }
+
+  /* route header badge */
+  .p2-route-header {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 9.5px; font-weight: 700; color: var(--text-2);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+  .p2-route-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* merge node */
+  .p2-merge-row {
+    display: flex; align-items: center; justify-content: center; gap: 0;
+  }
+  .p2-merge-node {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--blue-bg); border: 1.5px solid var(--blue-mid);
+    border-radius: 8px; padding: 7px 16px;
+    font-size: 10px; font-weight: 700; color: var(--blue);
+    max-width: 420px; width: 100%;
+  }
+  .p2-merge-icon { font-size: 14px; }
+</style>
+
+<div class="p2-flow">
+
+  <!-- ── TIER 1: L1 SCREENING + L2 CHATBOT ── -->
+  <div class="p2-tier-label"><span class="p2-tier-num">1</span> Resume Screening &amp; Candidate Engagement</div>
+  <div class="p2-row">
+
+    <!-- L1: SCREENING & EVALUATION -->
+    <div class="lane lane-green" style="flex:1.2;">
+      <div class="lane-header">
+        <div class="lane-title">Screening &amp;<br>Evaluation</div>
+        <div class="lane-badge">L1</div>
+      </div>
+      <div class="agents-grid-2">
+        <div class="agent-sm">
+          <div class="icon-sm icon-green">⭐</div>
+          <div class="agent-name-sm">Skills Agent</div>
+        </div>
+        <div class="agent-sm">
+          <div class="icon-sm icon-green">❤</div>
+          <div class="agent-name-sm">Behavioral Agent</div>
+        </div>
+        <div class="agent-sm">
+          <div class="icon-sm icon-green">🕐</div>
+          <div class="agent-name-sm">Stability Agent</div>
+        </div>
+        <div class="agent-sm">
+          <div class="icon-sm icon-green">⚠</div>
+          <div class="agent-name-sm">Risk Agent</div>
+        </div>
+      </div>
+      <div class="agent-sm" style="margin-top:3px;">
+        <div class="icon-sm icon-green">📄</div>
+        <div class="agent-name-sm">Candidate History Agent</div>
+      </div>
+      <div class="pill">
+        <div class="pill-label">Each Agent Outputs</div>
+        <div class="pv-green">Score · Confidence · Explanation</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-title ic-teal">← Data Sources</div>
+        ATS · Resume Parser · LinkedIn API · Job Description Store · Assessment Platform
+      </div>
+    </div>
+
+    <!-- L2: CANDIDATE INTERACTION -->
+    <div class="lane lane-green" style="flex:1;">
+      <div class="lane-header">
+        <div class="lane-title">Candidate<br>Interaction</div>
+        <div class="lane-badge">L2</div>
+      </div>
+      <div class="agent">
+        <div class="agent-icon icon-green">💬</div>
+        <div class="agent-name">Career Chatbot Agent</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-title ic-slate">← Redirected From</div>
+        LinkedIn · Indeed · Naukri · Career Page after application submission
+      </div>
+      <div class="pill">
+        <div class="pill-label">Functions</div>
+        <div class="pd">· Answers job questions<br>· Guides application flow<br>· Provides status updates<br>· Collects supplementary info</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-title" style="color:var(--text-3);">KPIs</div>
+        Chatbot Resolution Rate · Response Time · Drop-Off Rate
+      </div>
+    </div>
+
+  </div><!-- /p2-row tier 1 -->
+
+  <!-- ── CONNECTOR ── -->
+  <div class="p2-connector">
+    <div class="p2-connector-arrow">↓ &nbsp; Agent reports synthesised → Shortlisting Decision</div>
+  </div>
+
+  <!-- ── SHORTLISTING GATE ── -->
+  <div class="p2-gate-row">
+    <div class="p2-gate-node">
+      <div class="p2-gate-diamond"><span>⬦</span></div>
+      <div class="p2-gate-body">
+        <div class="p2-gate-title">Shortlisting Decision — Candidate Pool Selection</div>
+        <div class="p2-gate-sub">Aggregated L1 scores reviewed · Candidates above threshold advance · Below threshold closed</div>
+        <div class="p2-gate-outcomes">
+          <span class="p2-gate-tag p2-gate-proceed">✓ Advance to Next Round</span>
+          <span class="p2-gate-tag p2-gate-drop">✗ Not Shortlisted — Closed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONNECTOR ── -->
+  <div class="p2-connector">
+    <div class="p2-connector-arrow">↓ &nbsp; Shortlisted pool → Recruiter / HM selects screening route</div>
+  </div>
+
+  <!-- ── TIER 2: BRANCH — TELEPHONIC vs ASSESSMENT-FIRST ── -->
+  <div class="p2-tier-label"><span class="p2-tier-num">2</span> Screening Route — Recruiter / HM Choice</div>
+  <div class="p2-branch-row">
+
+    <!-- LEFT BRANCH: Telephonic Route -->
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div class="p2-route-header">
+        <div class="p2-route-dot" style="background:#0C6E52;"></div>
+        Route A — Telephonic First
+      </div>
+      <div class="lane lane-green" style="width:100%;">
+        <div class="lane-header">
+          <div class="lane-title">Telephonic<br>Screening</div>
+          <div class="lane-badge" style="background:#0C6E52;">TEL</div>
+        </div>
+        <div class="agent">
+          <div class="agent-icon icon-green">📞</div>
+          <div class="agent-name">Recruiter / Hiring Manager Call</div>
+        </div>
+        <div class="pill">
+          <div class="pill-label">Purpose</div>
+          <div class="pd">Culture fit · Communication · Role alignment · Quick qualification check</div>
+        </div>
+        <div class="info-card" style="border-left:3px solid var(--green-line);">
+          <div class="ic-title ic-green">Recruiter Feedback Captured</div>
+          Structured feedback form submitted post-call · Proceed / Hold / Reject decision logged
+        </div>
+        <div class="info-card" style="border-left:3px solid var(--blue-line); margin-top:6px;">
+          <div class="ic-title ic-blue">🧠 Model Training Input</div>
+          Recruiter feedback + outcome fed back into L1 agent weights · Improves future shortlisting accuracy
+        </div>
+        <div class="pill" style="margin-top:6px;">
+          <div class="pill-label">If Proceed →</div>
+          <div class="pv-green">Advance to Assessment Round (L3)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="p2-branch-divider">
+      <div class="p2-branch-line"></div>
+      <div class="p2-branch-or">OR</div>
+      <div class="p2-branch-line"></div>
+    </div>
+
+    <!-- RIGHT BRANCH: Assessment-First Route -->
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div class="p2-route-header">
+        <div class="p2-route-dot" style="background:#1648B0;"></div>
+        Route B — Assessment First
+      </div>
+      <div class="lane lane-blue hl-blue" style="width:100%;">
+        <div class="lane-header">
+          <div class="lane-title">Assessment &amp;<br>Coordination</div>
+          <div class="lane-badge">L3</div>
+        </div>
+        <div class="agent">
+          <div class="agent-icon icon-green">🛡</div>
+          <div class="agent-name">Assessment Integrity Agent</div>
+        </div>
+        <div class="agent">
+          <div class="agent-icon icon-green">📅</div>
+          <div class="agent-name">Interview Scheduling Agent</div>
+        </div>
+        <div class="agent">
+          <div class="agent-icon icon-green">📞</div>
+          <div class="agent-name">Voice Confirmation Agent</div>
+        </div>
+        <div class="pill">
+          <div class="pill-label">Handles</div>
+          <div class="pd">Test dispatch · Proctoring · Integrity monitoring · Slot booking · Confirmations</div>
+        </div>
+        <div class="info-card">
+          <div class="ic-title" style="color:var(--text-3);">KPIs</div>
+          Scheduling Automation Rate · Confirmation Rate · Integrity Violation Rate
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /p2-branch-row -->
+
+  <!-- ── CONNECTOR ── -->
+  <div class="p2-connector">
+    <div class="p2-connector-arrow">↓ &nbsp; Both routes converge → Live Interview (Human Gate 1)</div>
+  </div>
+
+  <!-- ── MERGE NODE ── -->
+  <div class="p2-merge-row">
+    <div class="p2-merge-node">
+      <span class="p2-merge-icon">👤</span>
+      <div>
+        <div style="font-size:12px; font-weight:700; color:#92400E;">Live Interview — Human Gate 1 of 2</div>
+        <div style="font-size:9.5px; color:var(--text-3); font-family:'JetBrains Mono',monospace; margin-top:2px;">All shortlisted candidates pass through live interview · Structured scorecards mandatory · 24-hr submission window</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONNECTOR ── -->
+  <div class="p2-connector">
+    <div class="p2-connector-arrow">↓ &nbsp; Interview complete → Evaluation &amp; Decision layers</div>
+  </div>
+
+  <!-- ── TIER 3: L3b + L4 SIDE BY SIDE ── -->
+  <div class="p2-tier-label"><span class="p2-tier-num">3</span> Post-Interview Evaluation &amp; Decision Engine</div>
+  <div class="p2-row">
+
+    <!-- L3b: INTERVIEWER EVALUATION -->
+    <div class="lane lane-blue hl-blue" style="flex:1;">
+      <div class="lane-header">
+        <div class="lane-title">Interviewer<br>Evaluation</div>
+        <div class="lane-badge">L3b</div>
+      </div>
+      <div class="agent">
+        <div class="agent-icon icon-blue">📊</div>
+        <div class="agent-name">Interview Consistency Agent</div>
+      </div>
+      <div class="pill">
+        <div class="pill-label">Inputs</div>
+        <div class="pd">Interviewer scorecards · Interview feedback</div>
+      </div>
+      <div class="pill">
+        <div class="pill-label">Output</div>
+        <div class="pv-blue">Consistency Score · Variance Alert</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-title ic-blue">Persona: Interviewer</div>
+        Structured templates · Scoring guidance · Standardised feedback framework
+      </div>
+    </div>
+
+    <!-- L4: DECISION ORCHESTRATION -->
+    <div class="lane lane-blue hl-blue" style="flex:1.3;">
+      <div class="lane-header">
+        <div class="lane-title">Decision<br>Orchestration</div>
+        <div class="lane-badge">L4</div>
+      </div>
+      <div class="agent">
+        <div class="decision-engine">🔵</div>
+        <div class="agent-name" style="margin-top:5px;">Decision Aggregation Engine</div>
+      </div>
+      <div class="consensus-block">
+        <div class="pill-label" style="color:var(--blue);margin-bottom:5px;">Consensus Logic</div>
+        <div class="c-step"><span class="c-num">①</span><span>Score Normalisation (0–100)</span></div>
+        <div class="c-step"><span class="c-num">②</span><span>Weight Assignment per Role</span></div>
+        <div class="c-step"><span class="c-num">③</span><span>Weighted Score Calculation</span></div>
+        <div class="c-step"><span class="c-num">④</span><span>Conflict Detection</span></div>
+        <div class="c-step"><span class="c-num">⑤</span><span>Confidence Calculation</span></div>
+      </div>
+      <div class="decision-outcomes">
+        <div class="outcome"><div class="outcome-dot" style="background:var(--pass)"></div><span style="color:var(--pass)">Fit — Proceed (≥75)</span></div>
+        <div class="outcome"><div class="outcome-dot" style="background:var(--review)"></div><span style="color:var(--review)">Review Required (60–74)</span></div>
+        <div class="outcome"><div class="outcome-dot" style="background:var(--decline)"></div><span style="color:var(--decline)">Not Fit — Close (&lt;60)</span></div>
+      </div>
+      <div class="agent">
+        <div class="icon-sm icon-blue">⚙</div>
+        <div class="agent-name-sm">Explainability Agent</div>
+      </div>
+    </div>
+
+  </div><!-- /p2-row tier 3 -->
+
+  <!-- ── CONNECTOR ── -->
+  <div class="p2-connector">
+    <div class="p2-connector-arrow">↓ &nbsp; Decision generated → Policy validation</div>
+  </div>
+
+  <!-- ── TIER 4: L4b GOVERNANCE ── -->
+  <div class="p2-tier-label"><span class="p2-tier-num">4</span> Policy, Governance &amp; Human Decision Gate</div>
+  <div class="p2-row">
+
+    <!-- L4b: POLICY & GOVERNANCE -->
+    <div class="lane lane-violet hl-violet" style="flex:1;">
+      <div class="lane-header">
+        <div class="lane-title">Policy &amp;<br>Governance</div>
+        <div class="lane-badge">L4b</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-title ic-violet">Policy Layer Checks</div>
+        <ul><li>Risk thresholds</li><li>Conflict flags</li><li>Confidence thresholds</li><li>Hiring governance rules</li></ul>
+      </div>
+      <div class="info-card">
+        <div class="ic-title ic-violet">Conflict Triggers</div>
+        <div class="conflict-row"><span class="cr-cond">Score &lt;40 &amp; another &gt;75</span><span class="cr-tag cr-flag">Flag</span></div>
+        <div class="conflict-row"><span class="cr-cond">Risk=High &amp; Skills≥75</span><span class="cr-tag cr-review">Review</span></div>
+        <div class="conflict-row"><span class="cr-cond">Interview variance</span><span class="cr-tag cr-review">Review</span></div>
+        <div class="conflict-row"><span class="cr-cond">Behavioral &lt;50</span><span class="cr-tag cr-block">Block auto</span></div>
+      </div>
+      <div class="human-gate">
+        <div class="gate-icon">✏</div>
+        <div class="gate-text">
+          <strong>Hiring Decision</strong>
+          <span>Human Gate 2 of 2 · Override logged</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ic-title ic-violet">KPIs</div>
+        Override Rate · Policy Trigger Rate · Override Justification · Decision Trace Completeness
+      </div>
+    </div>
+
+  </div><!-- /p2-row tier 4 -->
+
+  <!-- ── CONNECTOR ── -->
+  <div class="p2-connector">
+    <div class="p2-connector-arrow">↓ &nbsp; Post-hire outcomes loop back → model improvement</div>
+  </div>
+
+  <!-- ── TIER 5: L5 WORKFORCE INTELLIGENCE ── -->
+  <div class="p2-tier-label"><span class="p2-tier-num">5</span> Post-Hire Learning &amp; Model Refinement</div>
+  <div class="p2-row">
+
+    <!-- L5: WORKFORCE INTELLIGENCE -->
+    <div class="lane lane-amber hl-amber" style="flex:1;">
+      <div class="lane-header">
+        <div class="lane-title">Workforce<br>Intelligence</div>
+        <div class="lane-badge">L5</div>
+      </div>
+      <div class="agent">
+        <div class="agent-icon icon-amber">📈</div>
+        <div class="agent-name">Performance Intelligence Agent</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-title ic-amber">Analyses Post-Hire Signals</div>
+        <ul><li>Performance reviews</li><li>Promotion timelines</li><li>Early attrition patterns</li></ul>
+      </div>
+      <div class="pill" style="border-left:3px solid var(--amber-line);">
+        <div class="pill-label" style="color:var(--amber);">↩ Feeds Back Into</div>
+        <div class="pd">L1 agent weights + Telephonic feedback scores — every hire makes the system smarter</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-title ic-amber">KPIs</div>
+        Quality of Hire · Score vs Performance Correlation · High-Risk Hire Conversion
+      </div>
+    </div>
+
+  </div><!-- /p2-row tier 5 -->
+
+</div><!-- /p2-flow -->
+
+<!-- ═══════════════════════════════════════════ PHASE 3 -->
+<div class="section-bar">
+  <div class="section-bar-line"></div>
+  <div class="section-bar-label tag-amber">Phase 3 — Post-Hire Outcome Tracking</div>
+  <div class="section-bar-line"></div>
+</div>
+
+<div class="flow-wrapper" id="p3-wrapper">
+<svg class="flow-svg" id="p3-svg"></svg>
+<div class="lanes-row" id="p3-lanes" style="grid-template-columns: repeat(3,1fr) 36px 1fr; margin-bottom:12px;">
+
+  <!-- PH-1 with cross-sell -->
+  <div class="lane lane-amber">
+    <div class="lane-header">
+      <div class="lane-title">Onboarding<br>Tracking</div>
+      <div class="lane-badge">PH-1</div>
+    </div>
+    <div class="agent">
+      <div class="agent-icon icon-amber">🚀</div>
+      <div class="agent-name">Onboarding Progress Agent</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Inputs</div>
+      <div class="pd">Onboarding milestones · HR onboarding systems</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Output</div>
+      <div class="pv-amber">Onboarding Success Indicators</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-title ic-amber">Trigger</div>
+      Candidate accepts offer → milestone tracking begins
+    </div>
+    <!-- CROSS-SELL BADGE -->
+    <div class="cross-sell">
+      <div class="cs-title">🔗 Cross-Sell — IT Helpdesk Workflow</div>
+      <div class="cs-body">This agent intersects with the <strong style="color:var(--blue)">IT Helpdesk Use Case</strong>. Onboarding milestones trigger IT provisioning workflows — laptop setup, access credentials, system onboarding. Shared data model enables cross-vertical deployment and upsell opportunity.</div>
+    </div>
+  </div>
+
+  <!-- PH-2 -->
+  <div class="lane lane-amber">
+    <div class="lane-header">
+      <div class="lane-title">Early<br>Performance</div>
+      <div class="lane-badge">PH-2</div>
+    </div>
+    <div class="agent">
+      <div class="agent-icon icon-amber">⚡</div>
+      <div class="agent-name">Early Performance Agent</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Inputs</div>
+      <div class="pd">Manager feedback · Early performance metrics</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Output</div>
+      <div class="pv-amber">Early Success Signals</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-title ic-amber">KPI</div>
+      Hiring Score vs Performance Correlation
+    </div>
+  </div>
+
+  <!-- PH-3 -->
+  <div class="lane lane-amber">
+    <div class="lane-header">
+      <div class="lane-title">Attrition<br>Monitoring</div>
+      <div class="lane-badge">PH-3</div>
+    </div>
+    <div class="agent">
+      <div class="agent-icon icon-amber">📉</div>
+      <div class="agent-name">Attrition Monitoring Agent</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Inputs</div>
+      <div class="pd">Employee tenure data · Exit records</div>
+    </div>
+    <div class="pill">
+      <div class="pill-label">Output</div>
+      <div class="pv-amber">Attrition Risk Insights → Hiring Signals</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-title ic-amber">KPI</div>
+      Early Attrition Rate (first 6 months)
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div class="lane-arrow">→</div>
+
+  <!-- PH-4 -->
+  <div class="lane lane-amber hl-amber">
+    <div class="lane-header">
+      <div class="lane-title">Hiring Outcome<br>Feedback Loop</div>
+      <div class="lane-badge">PH-4</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-title ic-amber">Post-Hire Outcomes Refine</div>
+      <ul>
+        <li>Agent weights (L2 calibration)</li>
+        <li>Risk thresholds</li>
+        <li>Conflict detection rules</li>
+      </ul>
+    </div>
+    <div class="pill" style="border-left:3px solid var(--amber-line);">
+      <div class="pill-label" style="color:var(--amber);">Composite KPI</div>
+      <div class="pv-amber">Quality of Hire Index</div>
+      <div class="pd" style="margin-top:3px;">Performance rating + Retention + Promotion indicators</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ ANALYTICS DASHBOARD -->
+<div class="section-bar">
+  <div class="section-bar-line"></div>
+  <div class="section-bar-label tag-violet">Analytics &amp; Reporting Dashboard</div>
+  <div class="section-bar-line"></div>
+</div>
+
+<div class="dashboard-section">
+  <div class="dash-header">
+    <div class="dash-title-block">
+      <div class="dash-eyebrow">Real-Time Intelligence Layer</div>
+      <h3>Avirat Analytics Dashboard</h3>
+      <div class="dash-sub">Centralised metrics for recruiters, hiring managers, and HR leadership — updated in real time</div>
+    </div>
+    <div class="dash-audiences">
+      <span class="da-badge da-recruiter">👥 Recruiter View</span>
+      <span class="da-badge da-leadership">📊 Leadership View</span>
+      <span class="da-badge da-hr">🏢 HR Operations View</span>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+
+    <!-- Panel 1: Pipeline Health -->
+    <div class="dash-panel">
+      <div class="dp-header">
+        <div class="dp-title">📋 Pipeline Health</div>
+        <span class="dp-audience da-recruiter">Recruiter</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-item"><span class="kpi-label">Active Candidates</span><span class="kpi-value kv-blue">247</span></div>
+        <div class="kpi-item"><span class="kpi-label">Avg. Time to Decision</span><span class="kpi-value kv-amber">4.2 days</span></div>
+        <div class="kpi-item"><span class="kpi-label">Scheduling Automation Rate</span><span class="kpi-value kv-green">84%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Chatbot Resolution Rate</span><span class="kpi-value kv-green">78%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Candidate Drop-Off Rate</span><span class="kpi-value kv-red">12%</span></div>
+      </div>
+    </div>
+
+    <!-- Panel 2: Decision Quality -->
+    <div class="dash-panel">
+      <div class="dp-header">
+        <div class="dp-title">🎯 Decision Quality</div>
+        <span class="dp-audience da-leadership">Leadership</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-item"><span class="kpi-label">Recommendation Acceptance Rate</span><span class="kpi-value kv-green">71%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Override Rate</span><span class="kpi-value kv-amber">14%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Override Justification Completeness</span><span class="kpi-value kv-green">100%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Conflict Detection Rate</span><span class="kpi-value kv-amber">9%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Decision Trace Completeness</span><span class="kpi-value kv-green">100%</span></div>
+      </div>
+    </div>
+
+    <!-- Panel 3: Governance -->
+    <div class="dash-panel">
+      <div class="dp-header">
+        <div class="dp-title">🛡 Governance &amp; Risk</div>
+        <span class="dp-audience da-leadership">Leadership</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-item"><span class="kpi-label">Policy Trigger Rate</span><span class="kpi-value kv-amber">11%</span></div>
+        <div class="kpi-item"><span class="kpi-label">High-Risk Candidates Flagged</span><span class="kpi-value kv-red">6%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Assessment Integrity Violations</span><span class="kpi-value kv-green">0.4%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Avg. Override Response Time</span><span class="kpi-value kv-blue">18 hrs</span></div>
+        <div class="kpi-item"><span class="kpi-label">SLA Breach Rate</span><span class="kpi-value kv-green">3%</span></div>
+      </div>
+    </div>
+
+    <!-- Panel 4: Agent Evaluation Breakdown (bar chart) -->
+    <div class="dash-panel">
+      <div class="dp-header">
+        <div class="dp-title">🤖 Agent Score Distribution</div>
+        <span class="dp-audience da-recruiter">Recruiter</span>
+      </div>
+      <div class="mini-bar-row"><span class="mb-label">Skills Avg.</span><div class="mb-track"><div class="mb-fill" style="width:74%;background:var(--green-line)"></div></div><span class="mb-val">74</span></div>
+      <div class="mini-bar-row"><span class="mb-label">Behavioral Avg.</span><div class="mb-track"><div class="mb-fill" style="width:68%;background:var(--blue-line)"></div></div><span class="mb-val">68</span></div>
+      <div class="mini-bar-row"><span class="mb-label">Stability Avg.</span><div class="mb-track"><div class="mb-fill" style="width:71%;background:var(--teal-line)"></div></div><span class="mb-val">71</span></div>
+      <div class="mini-bar-row"><span class="mb-label">Risk (normalised)</span><div class="mb-track"><div class="mb-fill" style="width:62%;background:var(--amber-line)"></div></div><span class="mb-val">62</span></div>
+      <div class="mini-bar-row"><span class="mb-label">Consistency Avg.</span><div class="mb-track"><div class="mb-fill" style="width:79%;background:var(--violet-line)"></div></div><span class="mb-val">79</span></div>
+    </div>
+
+    <!-- Panel 5: Workforce Intelligence Signals -->
+    <div class="dash-panel">
+      <div class="dp-header">
+        <div class="dp-title">📡 Workforce Intelligence Signals</div>
+        <span class="dp-audience da-hr">HR Ops</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-item"><span class="kpi-label">Active Role Suggestions</span><span class="kpi-value kv-blue">8</span></div>
+        <div class="kpi-item"><span class="kpi-label">Skill Gap Alerts</span><span class="kpi-value kv-amber">5</span></div>
+        <div class="kpi-item"><span class="kpi-label">Churn Risk Flags</span><span class="kpi-value kv-red">3</span></div>
+        <div class="kpi-item"><span class="kpi-label">Budget Constraint Warnings</span><span class="kpi-value kv-amber">2</span></div>
+        <div class="kpi-item"><span class="kpi-label">Roles Within Budget Envelope</span><span class="kpi-value kv-green">91%</span></div>
+      </div>
+    </div>
+
+    <!-- Panel 6: Workforce Outcomes -->
+    <div class="dash-panel">
+      <div class="dp-header">
+        <div class="dp-title">🏆 Workforce Outcomes</div>
+        <span class="dp-audience da-leadership">Leadership</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-item"><span class="kpi-label">Quality of Hire Index</span><span class="kpi-value kv-green">7.4 / 10</span></div>
+        <div class="kpi-item"><span class="kpi-label">Early Attrition Rate (6-mo)</span><span class="kpi-value kv-green">8%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Score vs Performance Correlation</span><span class="kpi-value kv-blue">r = 0.67</span></div>
+        <div class="kpi-item"><span class="kpi-label">Onboarding Success Rate</span><span class="kpi-value kv-green">89%</span></div>
+        <div class="kpi-item"><span class="kpi-label">Hires Promoted within 12mo</span><span class="kpi-value kv-blue">23%</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div><!-- /flow-wrapper p3 -->
+
+<!-- ═══════════════════════════════════════════ LEARNING LOOP -->
+<div class="learning-loop">
+  <div class="loop-icon">🔁</div>
+  <div class="loop-body">
+    <h3>Continuous Learning Loop</h3>
+    <p>Post-hire outcomes flow back into L1 evaluation models. <strong>Every cohort of hires refines agent scoring weights</strong> — closing the gap between hiring signal and employee performance.</p>
+  </div>
+  <div class="loop-steps">
+    <div class="ls ls-dim">Hire Made</div>
+    <span class="ls-arr">→</span>
+    <div class="ls ls-dim">90-Day Review</div>
+    <span class="ls-arr">→</span>
+    <div class="ls ls-amber">Performance Signal</div>
+    <span class="ls-arr">→</span>
+    <div class="ls ls-amber">Model Refined</div>
+    <span class="ls-arr">→</span>
+    <div class="ls ls-green">Better Next Hire</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ FOOTER -->
+<div class="footer">
+  <div class="footer-note">
+    🔒 Human hiring managers retain final decision authority. All AI recommendation overrides are captured in the Decision Trace log.
+  </div>
+  <div class="footer-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green-line)"></div> AI Agent</div>
+    <div class="legend-item"><div class="legend-dot ld-dashed"></div> Human Gate</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--blue-line)"></div> Orchestration</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--amber-line)"></div> Intelligence Loop</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--violet-line)"></div> Governance</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--teal-line)"></div> Data Source</div>
+  </div>
+</div>
+
+<script>
+function drawFlowArrows(wrapperId, svgId, lanesId, strokeColor) {
+  const wrapper = document.getElementById(wrapperId);
+  const svg     = document.getElementById(svgId);
+  const lanes   = document.getElementById(lanesId);
+  if (!wrapper || !svg || !lanes) return;
+
+  // collect all direct .lane children (skip .lane-arrow divs)
+  const cards = Array.from(lanes.children).filter(el => el.classList.contains('lane'));
+  if (cards.length < 2) return;
+
+  const wRect = wrapper.getBoundingClientRect();
+
+  // arrowhead marker
+  const ns = 'http://www.w3.org/2000/svg';
+  const defs = document.createElementNS(ns, 'defs');
+  const marker = document.createElementNS(ns, 'marker');
+  marker.setAttribute('id', `arrow-${svgId}`);
+  marker.setAttribute('markerWidth', '8');
+  marker.setAttribute('markerHeight', '8');
+  marker.setAttribute('refX', '6');
+  marker.setAttribute('refY', '3');
+  marker.setAttribute('orient', 'auto');
+  const poly = document.createElementNS(ns, 'polygon');
+  poly.setAttribute('points', '0 0, 8 3, 0 6');
+  poly.setAttribute('fill', strokeColor);
+  poly.setAttribute('fill-opacity', '0.55');
+  marker.appendChild(poly);
+  defs.appendChild(marker);
+  svg.appendChild(defs);
+
+  for (let i = 0; i < cards.length - 1; i++) {
+    const fromRect = cards[i].getBoundingClientRect();
+    const toRect   = cards[i + 1].getBoundingClientRect();
+
+    // midpoint on right edge of fromCard, left edge of toCard — at card top area
+    const yFrom = fromRect.top  - wRect.top  + 38;
+    const yTo   = toRect.top    - wRect.top  + 38;
+    const x1    = fromRect.right - wRect.left;
+    const x2    = toRect.left   - wRect.left;
+    const gap   = x2 - x1;
+    const cx1   = x1 + gap * 0.45;
+    const cx2   = x2 - gap * 0.45;
+
+    const path = document.createElementNS(ns, 'path');
+    path.setAttribute('d', `M ${x1} ${yFrom} C ${cx1} ${yFrom}, ${cx2} ${yTo}, ${x2} ${yTo}`);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', strokeColor);
+    path.setAttribute('stroke-width', '1.8');
+    path.setAttribute('stroke-opacity', '0.45');
+    path.setAttribute('stroke-dasharray', '5,3');
+    path.setAttribute('marker-end', `url(#arrow-${svgId})`);
+    svg.appendChild(path);
+  }
+}
+
+window.addEventListener('load', () => {
+  drawFlowArrows('p3-wrapper', 'p3-svg', 'p3-lanes', '#EE8822');
+});
+</script>
+</body>
+</html>
